@@ -1,14 +1,28 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Stars = () => {
-    const [stars, setStars] = useState([]);
-  
-    useEffect(() => {
-      fetch('http://localhost:3000/stars')
-        .then(response => response.json())
-        .then(data => setStars(data.star)) // Zmieniamy przypisanie na `setStars(data.star)`
-        .catch(error => console.error('Error:', error));
-    }, []);
+  const [stars, setStars] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/stars')
+      .then(response => response.json())
+      .then(data => setStars(data.star))
+      .catch(error => console.error('Error:', error));
+  }, []);
+
+  const deleteStar = (id) => {
+    fetch(`http://localhost:3000/stars/delete/${id}`, {
+      method: 'DELETE'
+    })
+      .then(response => response.json())
+      .then(() => {
+        // Usunięcie gwiazdy z lokalnego stanu
+        const updatedStars = stars.filter(star => star.id !== id);
+        setStars(updatedStars);
+      })
+      .catch(error => console.error('Error:', error));
+  };
 
   return (
     <div>
@@ -17,7 +31,9 @@ const Stars = () => {
         <div key={star.id}>
           <h2>{star.name}</h2>
           <p>{star.description}</p>
-
+          <p>{star.imageLink}</p>
+          <Link to={`/stars/edit/${star.id}`}>Edit</Link>
+          <button onClick={() => deleteStar(star.id)}>Usuń</button>
         </div>
       ))}
     </div>

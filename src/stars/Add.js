@@ -1,9 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const AddStarForm = () => {
+const Add = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [imageLink, setImageLink] = useState('');
+  const [constellations, setConstellations] = useState([]);
+  const [selectedConstellationId, setSelectedConstellationId] = useState('');
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchConstellations();
+  }, []);
+
+  const fetchConstellations = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/constellations');
+      const data = await response.json();
+      setConstellations(data.constellation);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,15 +37,17 @@ const AddStarForm = () => {
           name,
           description,
           imageLink,
+          constellationId: selectedConstellationId,
         }),
       });
 
       if (response.ok) {
         console.log('Star added successfully!');
-        // Clear the form
         setName('');
         setDescription('');
         setImageLink('');
+        setSelectedConstellationId('');
+        navigate('/stars');
       } else {
         console.error('Failed to add star');
       }
@@ -49,6 +70,23 @@ const AddStarForm = () => {
           <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
         </label>
         <br />
+        <label>
+          Link to img:
+          <input type="text" value={imageLink} onChange={(e) => setImageLink(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Constellation:
+          <select value={selectedConstellationId} onChange={(e) => setSelectedConstellationId(e.target.value)}>
+            <option value="">Select constellation</option>
+            {constellations.map((constellation) => (
+              <option key={constellation.id} value={constellation.id}>
+                {constellation.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
         <br />
         <button type="submit">Add Star</button>
       </form>
@@ -56,4 +94,4 @@ const AddStarForm = () => {
   );
 };
 
-export default AddStarForm;
+export default Add;
