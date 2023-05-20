@@ -11,6 +11,7 @@ const Edit = () => {
     imageLink: '',
     constellation: '',
   });
+  const [constellations, setConstellations] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -18,9 +19,12 @@ const Edit = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/stars/${id}`);
-      setStar(response.data);
-      console.log(response.data)
+      const [starResponse, constellationsResponse] = await Promise.all([
+        axios.get(`http://localhost:3000/stars/${id}`),
+        axios.get(`http://localhost:3000/constellations`),
+      ]);
+      setStar(starResponse.data);
+      setConstellations(constellationsResponse.data.constellation);
     } catch (error) {
       console.log(error);
     }
@@ -43,7 +47,6 @@ const Edit = () => {
 
   return (
     <div>
-      
       <h1>Edit Star</h1>
       <form onSubmit={handleSubmit}>
         <div>
@@ -77,13 +80,19 @@ const Edit = () => {
         </div>
         <div>
           <label htmlFor="constellation">Constellation</label>
-          <input
-            type="text"
+          <select
             id="constellation"
             name="constellation"
             value={star.constellation}
             onChange={handleInputChange}
-          />
+          >
+            <option value="">Select Constellation</option>
+            {constellations.map((constellation) => (
+              <option key={constellation.id} value={constellation.name}>
+                {constellation.name}
+              </option>
+            ))}
+          </select>
         </div>
         <button type="submit">Save</button>
       </form>

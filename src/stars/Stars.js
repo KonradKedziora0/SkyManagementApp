@@ -3,13 +3,32 @@ import { Link } from 'react-router-dom';
 
 const Stars = () => {
   const [stars, setStars] = useState([]);
+  const [constellations, setConstellations] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/stars')
-      .then(response => response.json())
-      .then(data => setStars(data.star))
-      .catch(error => console.error('Error:', error));
+    fetchStars();
+    fetchConstellations();
   }, []);
+
+  const fetchStars = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/stars');
+      const data = await response.json();
+      setStars(data.star);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const fetchConstellations = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/constellations');
+      const data = await response.json();
+      setConstellations(data.constellation);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const deleteStar = (id) => {
     fetch(`http://localhost:3000/stars/delete/${id}`, {
@@ -24,6 +43,14 @@ const Stars = () => {
       .catch(error => console.error('Error:', error));
   };
 
+  const getConstellationNames = (constellationIds) => {
+    const uniqueConstellationIds = [...new Set(constellationIds)];
+    return uniqueConstellationIds.map(id => {
+      const constellation = constellations.find(c => c.id === id);
+      return constellation ? constellation.name : '';
+    });
+  };
+
   return (
     <div>
       <h1>Stars</h1>
@@ -31,7 +58,16 @@ const Stars = () => {
         <div key={star.id}>
           <h2>{star.name}</h2>
           <p>{star.description}</p>
-          <p>{star.imageLink}</p>
+          <h3>Constellations:</h3>
+          <ul>
+            {getConstellationNames(
+              stars
+                .filter(s => s.constellationId === star.constellationId)
+                .map(s => s.constellationId)
+            ).map(constellationName => (
+              <li key={constellationName}>{constellationName}</li>
+            ))}
+          </ul>
           <Link to={`/stars/edit/${star.id}`}>Edit</Link>
           <button onClick={() => deleteStar(star.id)}>Usuń</button>
         </div>

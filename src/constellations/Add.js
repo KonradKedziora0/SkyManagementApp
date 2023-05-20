@@ -56,7 +56,7 @@ const Add = () => {
        
         <br />
         <br />
-        <button type="submit">Add Star</button>
+        <button type="submit">Add Constellation</button>
       </form>
     </div>
   );
