@@ -1,0 +1,54 @@
+.sky-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .constellations-container {
+    width: 40%;
+  }
+  
+  .constellation-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .constellation-info {
+    margin-right: 20px;
+  }
+  
+  .star-window {
+    width: 300px;
+    height: 200px;
+    background-color: black;
+    position: relative; /* Dodano pozycjonowanie względem rodzica */
+  }
+  
+  .star-dot {
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute; /* Dodano pozycjonowanie absolutne */
+  }
+  .moon-dot {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    left: 80%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .half {
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 0 100%);
+  }
+  
+  .half-second {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
+  }
+  

@@ -8,6 +8,8 @@ import Constellation from './constellations/Constellations';
 import AddConstellation from './constellations/Add';
 import EditConstellationPage from './constellations/Edit';
 
+import Sky from './mysky/Sky';
+
 function App() {
   return (
     <Router>
@@ -29,6 +31,9 @@ function App() {
             <li>
               <Link to="/constellations/add">Add Constellation</Link>
             </li>
+            <li>
+              <Link to="/mysky/sky">My Sky</Link>
+            </li>
           </ul>
         </nav>
 
@@ -40,6 +45,8 @@ function App() {
           <Route path="/constellations" element={<Constellation />} />
           <Route path="/constellations/add" element={<AddConstellation />} />
           <Route path="/constellations/edit/:id" element={<EditConstellationPage />} />
+
+          <Route path="/mysky/sky" element={<Sky />} />
 
           <Route path="/" element={<Home />} />
         </Routes>
