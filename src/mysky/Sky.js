@@ -4,6 +4,7 @@ import './sky.css';
 const Sky = () => {
   const [constellations, setConstellations] = useState([]);
   const [backgroundBrightness, setBackgroundBrightness] = useState({});
+  const [starPositions, setStarPositions] = useState({});
 
   useEffect(() => {
     fetchConstellations();
@@ -18,26 +19,38 @@ const Sky = () => {
         {}
       );
       setBackgroundBrightness(initialBackgroundBrightness);
-      
-    const initialConstellations = data.constellation.map((constellation) => ({
-      ...constellation,
-      Stars: constellation.Stars.map((star) => ({ ...star, enabled: true })),
-    }));
 
-    setConstellations(initialConstellations);
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
+      const initialConstellations = data.constellation
+        .filter((constellation) => constellation.Stars.length > 0) // Filtruj konstelacje bez gwiazd
+        .map((constellation) => ({
+          ...constellation,
+          Stars: constellation.Stars.map((star) => ({ ...star, enabled: true })),
+        }));
 
-  const getRandomPosition = () => {
+      setConstellations(initialConstellations);
+      setStarPositions(generateStarPositions(initialConstellations));
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+
+  const generateStarPositions = (constellations) => {
+    const starPositions = {};
     const minOffset = 20;
     const maxOffset = 180;
-    const position = {
-      left: Math.floor(Math.random() * (maxOffset - minOffset + 1)) + minOffset,
-      top: Math.floor(Math.random() * (maxOffset - minOffset + 1)) + minOffset,
-    };
-    return position;
+
+    constellations.forEach((constellation) => {
+      constellation.Stars.forEach((star) => {
+        const position = {
+          left: Math.floor(Math.random() * (maxOffset - minOffset + 1)) + minOffset,
+          top: Math.floor(Math.random() * (maxOffset - minOffset + 1)) + minOffset,
+        };
+        starPositions[star.id] = position;
+      });
+    });
+
+    return starPositions;
   };
 
   const toggleStar = (constellationId, starId) => {
@@ -58,16 +71,14 @@ const Sky = () => {
   };
 
   const renderStars = (stars, constellationId) => {
-    const renderedStars = [];
-    for (let i = 0; i < stars.length; i++) {
-      const star = stars[i];
-      const position = getRandomPosition();
+    return stars.map((star) => {
+      const position = starPositions[star.id];
       const starStyle = {
         left: `${position.left}px`,
         top: `${position.top}px`,
         opacity: star.enabled ? 1 : 0,
       };
-      renderedStars.push(
+      return (
         <span
           key={star.id}
           className="star-dot"
@@ -75,8 +86,7 @@ const Sky = () => {
           onClick={() => toggleStar(constellationId, star.id)}
         ></span>
       );
-    }
-    return renderedStars;
+    });
   };
 
   const renderMoon = (moonVisibility) => {
@@ -160,7 +170,7 @@ const Sky = () => {
               </div>
               <div className="background-slider-container">
                 <label htmlFor={`background-slider-${constellation.id}`}>
-                  Frog Visibility:
+                  Background Brightness:
                 </label>
                 <br />
                 <input

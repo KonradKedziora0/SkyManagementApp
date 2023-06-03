@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Stars from './stars/Stars';
 import AddStar from './stars/Add';
 import EditStarPage from './stars/Edit';
@@ -49,6 +49,7 @@ function App() {
           <Route path="/mysky/sky" element={<Sky />} />
 
           <Route path="/" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>
@@ -57,6 +58,10 @@ function App() {
 
 function Home() {
   return <h2>Strona główna</h2>;
+}
+
+function NotFound() {
+  return <h2>404 - Page Not Found</h2>;
 }
 
 export default App;

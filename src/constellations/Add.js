@@ -5,11 +5,16 @@ const Add = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [imageLink, setImageLink] = useState('');
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:3000/constellations/add', {
@@ -40,20 +45,46 @@ const Add = () => {
     }
   };
 
+  const validateForm = () => {
+    const errors = {};
+
+    if (!name) {
+      errors.name = 'Name is required.';
+    }
+
+    if (!description) {
+      errors.description = 'Description is required.';
+    }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
+
   return (
     <div>
       <h1>Add Constellation</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-        </label>
-        <br />
-        <label>
-          Description:
-          <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-        </label>
-       
+        <div>
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          {errors.name && <span style={{ color: 'red' }}>{errors.name}</span>}
+        </div>
+        <div>
+          <label htmlFor="description">Description:</label>
+          <input
+            type="text"
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          {errors.description && <span style={{ color: 'red' }}>{errors.description}</span>}
+        </div>
         <br />
         <br />
         <button type="submit">Add Constellation</button>

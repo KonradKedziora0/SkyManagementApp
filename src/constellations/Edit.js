@@ -8,9 +8,8 @@ const Edit = () => {
   const [constellation, setConstellation] = useState({
     name: '',
     description: '',
-    imageLink: '',
-    constellation: '',
   });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     fetchData();
@@ -20,7 +19,7 @@ const Edit = () => {
     try {
       const response = await axios.get(`http://localhost:3000/constellations/${id}`);
       setConstellation(response.data);
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -33,6 +32,10 @@ const Edit = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       await axios.put(`http://localhost:3000/constellations/edit/${id}`, constellation);
       navigate('/constellations'); // Przekierowanie po zapisaniu
@@ -41,9 +44,24 @@ const Edit = () => {
     }
   };
 
+  const validateForm = () => {
+    const errors = {};
+
+    if (!constellation.name) {
+      errors.name = 'Name is required.';
+    }
+
+    if (!constellation.description) {
+      errors.description = 'Description is required.';
+    }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
+
   return (
     <div>
-      
       <h1>Edit Constellation</h1>
       <form onSubmit={handleSubmit}>
         <div>
@@ -55,6 +73,7 @@ const Edit = () => {
             value={constellation.name}
             onChange={handleInputChange}
           />
+          {errors.name && <span style={{ color: 'red' }}>{errors.name}</span>}
         </div>
         <div>
           <label htmlFor="description">Description</label>
@@ -64,18 +83,8 @@ const Edit = () => {
             value={constellation.description}
             onChange={handleInputChange}
           ></textarea>
+          {errors.description && <span style={{ color: 'red' }}>{errors.description}</span>}
         </div>
-        <div>
-          <label htmlFor="imageLink">Image Link</label>
-          <input
-            type="text"
-            id="imageLink"
-            name="imageLink"
-            value={constellation.imageLink}
-            onChange={handleInputChange}
-          />
-        </div>
-       
         <button type="submit">Save</button>
       </form>
     </div>

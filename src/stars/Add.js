@@ -7,6 +7,8 @@ const Add = () => {
   const [imageLink, setImageLink] = useState('');
   const [constellations, setConstellations] = useState([]);
   const [selectedConstellationId, setSelectedConstellationId] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
 
   const navigate = useNavigate();
 
@@ -26,6 +28,23 @@ const Add = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Resetowanie wiadomości błędów
+    setNameError('');
+    setDescriptionError('');
+
+    // Sprawdzenie, czy pola Name i Description są wypełnione
+    if (!name) {
+      setNameError('Please enter a name');
+    }
+    if (!description) {
+      setDescriptionError('Please enter a description');
+    }
+
+    // Jeśli wystąpił błąd, przerwij proces dodawania gwiazdy
+    if (!name || !description) {
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:3000/stars/add', {
@@ -63,11 +82,13 @@ const Add = () => {
         <label>
           Name:
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+          {nameError && <span style={{ color: 'red' }}>{nameError}</span>}
         </label>
         <br />
         <label>
           Description:
           <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+          {descriptionError && <span style={{ color: 'red' }}>{descriptionError}</span>}
         </label>
         <br />
         <label>
