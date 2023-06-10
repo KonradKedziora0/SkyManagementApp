@@ -105,13 +105,13 @@ const Edit = () => {
           <label htmlFor="constellation">Constellation</label>
           <select
             id="constellation"
-            name="constellation"
-            value={star.constellation}
+            name="constellationId" // zmieniamy name na "constellationId"
+            value={star.constellationId} // zmieniamy na "constellationId"
             onChange={handleInputChange}
           >
             <option value="">Select Constellation</option>
             {constellations.map((constellation) => (
-              <option key={constellation.id} value={constellation.name}>
+              <option key={constellation.id} value={constellation.id}> {/* zmieniamy value na "constellation.id" */}
                 {constellation.name}
               </option>
             ))}

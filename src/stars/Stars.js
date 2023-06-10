@@ -54,29 +54,27 @@ const Stars = () => {
   return (
     <div>
       <h1>Stars</h1>
-      <div class="item_body">
-      {stars.map(star => (
-        <div class ="item" key={star.id}>
-          <h3 class="item_title">{star.name}</h3>
-          <h3 class="item_title">{star.img}</h3>
-          
-          <p>{star.description}</p>
-          <h3>Constellations:</h3>
-          <ul class="item_edit">
-            {getConstellationNames(
-              stars
-                .filter(s => s.constellationId === star.constellationId)
-                .map(s => s.constellationId)
-            ).map(constellationName => (
-              <li key={constellationName}>{constellationName}</li>
-            ))}
-          </ul>
-          <Link to={`/stars/edit/${star.id}`}>Edit</Link>
-          <button onClick={() => deleteStar(star.id)}>Usuń</button>
-        </div>
-       
-      ))}
-    </div>
+      <div className="item_body">
+        {stars.map(star => (
+          <div className="item" key={star.id}>
+            <h3 className="item_title">{star.name}</h3>
+            <p>{star.imageLink}</p>
+            <p>{star.description}</p>
+            <h3>Constellations:</h3>
+            <ul className="item_edit">
+              {getConstellationNames(
+                stars
+                  .filter(s => s.constellationId === star.constellationId)
+                  .map(s => s.constellationId)
+              ).map(constellationName => (
+                <li key={constellationName}>{constellationName}</li>
+              ))}
+            </ul>
+            <Link to={`/stars/edit/${star.id}`}>Edit</Link>
+            <button onClick={() => deleteStar(star.id)}>Usuń</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

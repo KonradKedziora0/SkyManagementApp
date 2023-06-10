@@ -5,10 +5,7 @@ import axios from 'axios';
 const Edit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [constellation, setConstellation] = useState({
-    name: '',
-    description: '',
-  });
+  const [constellation, setConstellation] = useState(null);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -18,8 +15,7 @@ const Edit = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(`http://localhost:3000/constellations/${id}`);
-      setConstellation(response.data);
-      console.log(response.data);
+      setConstellation(response.data.constellation);
     } catch (error) {
       console.log(error);
     }
@@ -59,6 +55,10 @@ const Edit = () => {
 
     return Object.keys(errors).length === 0;
   };
+
+  if (!constellation) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
