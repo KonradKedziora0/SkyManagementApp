@@ -34,20 +34,22 @@ const Constellations = () => {
   return (
     <div>
       <h1>Constellations</h1>
+      <div class="item_body">
       {constellations.map(constellation => (
-        <div key={constellation.id}>
-          <h2>{constellation.name}</h2>
+        <div class="item" key={constellation.id}>
+          <h3 class="item_title">{constellation.name}</h3>
           <p>{constellation.description}</p>
-          <h3>Stars:</h3>
-          <ul>
+          <h4>Stars:</h4>
+          <ul class="item_edit">
             {constellation.Stars.map(star => (
-              <li key={star.id}>{star.name}</li>
+              <li class="const_li" key={star.id}>{star.name}</li>
             ))}
           </ul>
           <Link to={`/constellations/edit/${constellation.id}`}>Edit</Link>
           <button onClick={() => deleteConstellation(constellation.id)}>Usuń</button>
         </div>
       ))}
+    </div>
     </div>
   );
 };

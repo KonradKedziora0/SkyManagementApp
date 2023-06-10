@@ -1,54 +1,95 @@
 .sky-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-left:30% ;
+}
+
+.constellations-container {
+  width: 100%;
+  align-items: center;
+}
+
+.constellation-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.constellation-info {
+  margin-right: 20px;
+}
+
+.star-window {
+  margin-top: 10%;
+  width: 350px;
+  height: 200px;
+  background-color: black;
+  position: relative;
+}
+
+.star-dot {
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.moon-dot {
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 80%;
+  top: 20%;
+  transform: translate(-50%, -50%);
+}
+
+.half {
+  clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+}
+
+.half-second {
+  clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+}
+
+.star-list {
+  display: list-item;
+}
+
+.star-list li {
+  color: white;
+}
+
+.sliders-container {
+  margin-top: 10%;
+}
+
+@media screen and (max-width: 1200px) {
+  .sky-container {
+  margin-left: 0;
   }
-  
-  .constellations-container {
-    width: 40%;
-  }
-  
   .constellation-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
+
   .constellation-info {
-    margin-right: 20px;
+    margin-right: 0;
+    margin-bottom: 10px;
   }
-  
+
   .star-window {
-    width: 300px;
+    width: 350px;
     height: 200px;
-    background-color: black;
-    position: relative; /* Dodano pozycjonowanie względem rodzica */
   }
-  
-  .star-dot {
-    width: 10px;
-    height: 10px;
-    background-color: white;
-    border-radius: 50%;
-    position: absolute; /* Dodano pozycjonowanie absolutne */
-  }
+
   .moon-dot {
-    width: 30px;
-    height: 30px;
-    background-color: white;
-    border-radius: 50%;
-    position: absolute;
-    left: 80%;
-    top: 20%;
+    left: 50%;
+    top: 10%;
     transform: translate(-50%, -50%);
   }
-  
-  .half {
-    clip-path: polygon(100% 0, 100% 0, 100% 100%, 0 100%);
-  }
-  
-  .half-second {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
-  }
-  
+}

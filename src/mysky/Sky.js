@@ -136,15 +136,17 @@ const Sky = () => {
               <p>{constellation.description}</p>
               <h3>Stars:</h3>
               <h4>{constellation.stars}</h4>
-              <ul>
+              <ul class='star-list'>
                 {constellation.Stars.map((star) => (
                   <li key={star.id}>
                     {star.name}{' '}
-                    <button onClick={() => toggleStar(constellation.id, star.id)}>
+                    <button onClick={() => toggleStar(constellation.id, star.id)} class='star-button'>
                       {star.enabled ? 'On' : 'Off'}
                     </button>
                   </li>
+                  
                 ))}
+                <br/>
               </ul>
             </div>
             <div
